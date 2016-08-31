@@ -1,0 +1,106 @@
+
+```{r include = FALSE}
+require(rmarkdown); require(knitr); require(sevenbridges); require(readr);
+
+options(max.print = "99"); opts_knit$set(width = 99); opts_chunk$set(cache=FALSE, tidy=FALSE)
+
+source("~/sbg_auth.R")
+
+```
+
+<hr>
+
+Wrapping of vcf2maf for use in any cwl compatible platform.
+
+## base command
+
+```{sh base command, eval=FALSE}
+
+vcf2maf... [fill this out]
+
+```
+
+## docker 
+
+docker file
+
+https://github.com/teamcgc/vcf2maf/Dockerfile
+
+The docker conatiner is
+
+``` teamcgc/vcf2maf:latest ```
+
+Docker image should be built off master repo probably since no changes have been made.
+
+## App ports {.tabset .tabset-fade .tabset-tabs}
+
+### Inputs
+
+```{r inputs, eval=run.mode=="push"}
+inputs = list(
+  
+input(id = "vcf", label = "vcf", description = "vcf", type = "File")
+
+)
+
+```
+
+### Outputs
+
+```{r output, eval = run.mode=="push"}
+
+outputs = list(
+
+output(id = "maf", label = "maf", 
+description = "maf", type = "File",
+metadata = list(org = "cgp"),
+glob = "\"*.maf\""),
+
+
+output(id = "std_out", label = "std_out", 
+description = "standard output", type = "File...",
+metadata = list(org = "cgp"),
+glob = "\"std.out\"")
+  
+)
+
+
+
+```
+
+## Define Tool Object and Push to Platform {.tabset .tabset-fade .tabset-tabs}
+  
+### Tool object
+
+```{r 5 create tool object, eval=run.mode=="push"}
+
+tool <- Tool(
+id = "vcf2maf",
+label = "vcf2maf",
+hints = requirements(docker(pull = "teamcgc/vcf2maf:latet"), cpu(1), mem(1000)),
+baseCommand = "perl vcf2maf.pl --input-vcf data/test.vcf --output-maf test.vep.maf
+",
+stdout = "std.out",
+inputs = inputs,
+outputs = outputs
+)
+
+
+```
+
+### Make cwl file
+
+```{r make cwl, eval=destination=="platform"}
+
+write(tool$toJSON(pretty = TRUE), "vcf2maf_cwl.json")
+
+```
+
+### Push app to sbg platform
+
+```{r push app to sbg, eval=destination=="platform"}
+
+project$app_add("vcf2maf", tool)
+
+```
+
