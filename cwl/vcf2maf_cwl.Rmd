@@ -78,8 +78,7 @@ tool <- Tool(
 id = "vcf2maf",
 label = "vcf2maf",
 hints = requirements(docker(pull = "teamcgc/vcf2maf:latest"), cpu(1), mem(1000)),
-baseCommand = "perl vcf2maf.pl --input-vcf data/test.vcf --output-maf test.vep.maf
-",
+baseCommand = "perl /opt/vcf2maf/vcf2maf.pl --input-vcf /opt/vcf2maf/data/test.vcf --output-maf test.vep.maf && ls -lR",
 stdout = "std.out",
 inputs = inputs,
 outputs = outputs
