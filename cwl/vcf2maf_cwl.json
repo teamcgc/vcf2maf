@@ -52,7 +52,7 @@
   "hints": [
     {
       "class": "DockerRequirement",
-      "dockerPull": "teamcgc/vcf2maf:latet"
+      "dockerPull": "teamcgc/vcf2maf:latest"
     },
     {
       "class": "sbg:CPURequirement",
