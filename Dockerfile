@@ -65,7 +65,7 @@ ADD . /opt/vcf2maf
 
 COPY Dockerfile /opt/
 
-RUN PERL5LIB=$VEP_PATH:$PERL5LIB
-RUN PATH=$VEP_PATH/htslib:$PATH
+ENV PERL5LIB=$VEP_PATH:$PERL5LIB
+ENV PATH=$VEP_PATH/htslib:$PATH
 
 MAINTAINER Michele Mattioni, Seven Bridges, <michele.mattioni@sbgenomics.com>
